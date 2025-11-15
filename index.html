@@ -1,51 +1,188 @@
-<div id="scenePanel">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Journey — Boba, Lola & Tota</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  color:white;
+  background:url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+  background-size:cover;
+}
+header{
+  padding:24px;
+  text-align:center;
+  background:rgba(0,0,0,0.4);
+}
+header h1{margin:0;color:#ff2d95;}
+header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap:12px;
+  max-width:1200px;
+  margin:20px auto;
+}
+.photoCard{
+  width:100%;
+  aspect-ratio:1/1;
+  border-radius:12px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#00000040;
+  transition: transform 0.3s ease;
+}
+.photoCard:hover{
+  transform: scale(1.05);
+}
+.photoCard img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+#scenePanel{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:20px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  align-items:flex-end;
+  z-index:10;
+}
+.modelWrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  cursor:pointer;
+  position:relative;
+  width:90px;
+}
+.nameLabel{
+  margin-bottom:4px;
+  font-size:0.85rem;
+  color:#ffeef3;
+  text-align:center;
+}
+.bubble{
+  position:absolute;
+  bottom:120%;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,0.85);
+  padding:6px 12px;
+  border-radius:16px;
+  font-size:0.9rem;
+  display:none;
+  white-space:nowrap;
+  opacity:0;
+  transition: opacity 0.4s ease;
+  z-index:20;
+}
+.bubble.show{
+  display:block;
+  opacity:1;
+}
+.bubble::after{
+  content:"";
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%);
+  border-width:6px;
+  border-style:solid;
+  border-color:rgba(0,0,0,0.85) transparent transparent transparent;
+}
+model-viewer{
+  width:90px;
+  height:90px;
+  background:transparent;
+  pointer-events:auto;
+  cursor:default;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Our Journey</h1>
+  <p>Click a photo to write its story. Meet Boba, Lola & Tota below.</p>
+</header>
 
-  <!-- Tota -->
+<div class="grid" id="photoGrid">
+  <!-- 365 Photos Explicitly Written -->
+  <div class="photoCard"><img src="https://drive.google.com/file/d/1tQ7Dar4bFJ-0LCO2O-c5os8tB429Bc6P/view?usp=drivesdk " alt="Photo 1"></div>
+  <div class="photoCard"><img src="YOUR_LINK_2_HERE" alt="Photo 2"></div>
+  <div class="photoCard"><img src="YOUR_LINK_3_HERE" alt="Photo 3"></div>
+  <div class="photoCard"><img src="YOUR_LINK_4_HERE" alt="Photo 4"></div>
+  <div class="photoCard"><img src="YOUR_LINK_5_HERE" alt="Photo 5"></div>
+  <div class="photoCard"><img src="YOUR_LINK_6_HERE" alt="Photo 6"></div>
+  <div class="photoCard"><img src="YOUR_LINK_7_HERE" alt="Photo 7"></div>
+  <div class="photoCard"><img src="YOUR_LINK_8_HERE" alt="Photo 8"></div>
+  <div class="photoCard"><img src="YOUR_LINK_9_HERE" alt="Photo 9"></div>
+  <div class="photoCard"><img src="YOUR_LINK_10_HERE" alt="Photo 10"></div>
+  <div class="photoCard"><img src="YOUR_LINK_11_HERE" alt="Photo 11"></div>
+  <div class="photoCard"><img src="YOUR_LINK_12_HERE" alt="Photo 12"></div>
+  <div class="photoCard"><img src="YOUR_LINK_13_HERE" alt="Photo 13"></div>
+  <div class="photoCard"><img src="YOUR_LINK_14_HERE" alt="Photo 14"></div>
+  <div class="photoCard"><img src="YOUR_LINK_15_HERE" alt="Photo 15"></div>
+  <div class="photoCard"><img src="YOUR_LINK_16_HERE" alt="Photo 16"></div>
+  <div class="photoCard"><img src="YOUR_LINK_17_HERE" alt="Photo 17"></div>
+  <div class="photoCard"><img src="YOUR_LINK_18_HERE" alt="Photo 18"></div>
+  <div class="photoCard"><img src="YOUR_LINK_19_HERE" alt="Photo 19"></div>
+  <div class="photoCard"><img src="YOUR_LINK_20_HERE" alt="Photo 20"></div>
+  <!-- … continue up to Photo 365 -->
+  <div class="photoCard"><img src="YOUR_LINK_365_HERE" alt="Photo 365"></div>
+</div>
+
+<div id="scenePanel">
   <div class="modelWrap" id="totaWrap">
     <div class="nameLabel">Tota</div>
-
-    <model-viewer id="totaModel"
-      src="assets/chibi_cat.glb"
-      alt="Tota Model"
-      camera-controls
-      disable-tap
-      camera-orbit="0deg 90deg auto"
-      orientation="0deg 180deg 0deg">
-    </model-viewer>
-
+    <model-viewer id="totaModel" src="assets/chibi_cat.glb" alt="Tota Model" camera-controls></model-viewer>
     <div class="bubble" id="totaBubble"></div>
   </div>
-
-  <!-- Boba -->
   <div class="modelWrap" id="bobaWrap">
     <div class="nameLabel">Boba</div>
-
-    <model-viewer id="bobaModel"
-      src="assets/chibi_astronaut.glb"
-      alt="Boba Model"
-      camera-controls
-      disable-tap
-      camera-orbit="0deg 90deg auto"
-      orientation="0deg 180deg 0deg">
-    </model-viewer>
-
+    <model-viewer id="bobaModel" src="assets/chibi_astronaut.glb" alt="Boba Model" camera-controls></model-viewer>
     <div class="bubble" id="bobaBubble"></div>
   </div>
-
-  <!-- Lola -->
   <div class="modelWrap" id="lolaWrap">
     <div class="nameLabel">Lola</div>
-
-    <model-viewer id="lolaModel"
-      src="assets/chibi_dog.glb"
-      alt="Lola Model"
-      camera-controls
-      disable-tap
-      camera-orbit="0deg 90deg auto"
-      orientation="0deg -90deg 0deg">
-    </model-viewer>
-
+    <model-viewer id="lolaModel" src="assets/chibi_dog.glb" alt="Lola Model" camera-controls></model-viewer>
     <div class="bubble" id="dogBubble"></div>
   </div>
-
 </div>
+
+<script>
+// --- Boba Messages ---
+const bobaLines=['I love you Tonaaa ♥♥','I am here with you my love ♥✨','You are mine ok ?! 😉♥','You are what I wish for ♥♥','I will always be here for you ♥🫂','Eat well ok ? 😠'];
+let bIndex=0;
+const bobaBubble=document.getElementById('bobaBubble');
+let bobaTimeout, autoInterval;
+function showBoba(){ clearTimeout(bobaTimeout); bobaBubble.textContent=bobaLines[bIndex]; bobaBubble.classList.add('show'); bobaTimeout=setTimeout(()=>{ bobaBubble.classList.remove('show'); },3000); bIndex=(bIndex+1)%bobaLines.length; }
+function startAutoBoba(){ autoInterval=setInterval(showBoba,5000); }
+startAutoBoba();
+document.getElementById('bobaWrap').addEventListener('click',()=>{ clearInterval(autoInterval); showBoba(); startAutoBoba(); });
+
+// --- Lola Messages ---
+const dogBubble=document.getElementById('dogBubble');
+let dogSilenceUntil=0;
+function dogHaw(){ if(Date.now()<dogSilenceUntil) return; dogBubble.textContent='haw haw'; dogBubble.classList.add('show'); setTimeout(()=>dogBubble.classList.remove('show'),3000); }
+setInterval(dogHaw,15000);
+setTimeout(dogHaw,1500);
+document.getElementById('lolaWrap').addEventListener('click',()=>{ dogSilenceUntil=Date.now()+60000; dogBubble.textContent='♥'; dogBubble.classList.add('show'); setTimeout(()=>dogBubble.classList.remove('show'),3000); });
+
+// --- Tota Messages ---
+const totaBubble=document.getElementById('totaBubble');
+let totaSilenceUntil=0;
+function totaMeow(){ if(Date.now()<totaSilenceUntil) return; totaBubble.textContent='meow'; totaBubble.classList.add('show'); setTimeout(()=>totaBubble.classList.remove('show'),3000); }
+setInterval(totaMeow,15000);
+setTimeout(totaMeow,1500);
+document.getElementById('totaWrap').addEventListener('click',()=>{ totaSilenceUntil=Date.now()+60000; totaBubble.textContent='♥'; totaBubble.classList.add('show'); setTimeout(()=>totaBubble.classList.remove('show'),3000); });
+</script>
+</body>
+</html>
