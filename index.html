@@ -113,32 +113,7 @@ model-viewer{
   <p>Click a photo to write its story. Meet Boba, Lola & Tota below.</p>
 </header>
 
-<div class="grid" id="photoGrid">
-  <!-- 365 Photos Explicitly Written -->
-  <div class="photoCard"><img src="https://drive.google.com/uc?export=view&id=1tQ7Dar4bFJ-0LCO2O-c5os8tB429Bc6P" alt="Photo 1"></div>
-  <div class="photoCard"><img src="YOUR_LINK_2_HERE" alt="Photo 2"></div>
-  <div class="photoCard"><img src="YOUR_LINK_3_HERE" alt="Photo 3"></div>
-  <div class="photoCard"><img src="YOUR_LINK_4_HERE" alt="Photo 4"></div>
-  <div class="photoCard"><img src="YOUR_LINK_5_HERE" alt="Photo 5"></div>
-  <div class="photoCard"><img src="YOUR_LINK_6_HERE" alt="Photo 6"></div>
-  <div class="photoCard"><img src="YOUR_LINK_7_HERE" alt="Photo 7"></div>
-  <div class="photoCard"><img src="YOUR_LINK_8_HERE" alt="Photo 8"></div>
-  <div class="photoCard"><img src="YOUR_LINK_9_HERE" alt="Photo 9"></div>
-  <div class="photoCard"><img src="YOUR_LINK_10_HERE" alt="Photo 10"></div>
-  <div class="photoCard"><img src="YOUR_LINK_11_HERE" alt="Photo 11"></div>
-  <div class="photoCard"><img src="YOUR_LINK_12_HERE" alt="Photo 12"></div>
-  <div class="photoCard"><img src="YOUR_LINK_13_HERE" alt="Photo 13"></div>
-  <div class="photoCard"><img src="YOUR_LINK_14_HERE" alt="Photo 14"></div>
-  <div class="photoCard"><img src="YOUR_LINK_15_HERE" alt="Photo 15"></div>
-  <div class="photoCard"><img src="YOUR_LINK_16_HERE" alt="Photo 16"></div>
-  <div class="photoCard"><img src="YOUR_LINK_17_HERE" alt="Photo 17"></div>
-  <div class="photoCard"><img src="YOUR_LINK_18_HERE" alt="Photo 18"></div>
-  <div class="photoCard"><img src="YOUR_LINK_19_HERE" alt="Photo 19"></div>
-  <div class="photoCard"><img src="YOUR_LINK_20_HERE" alt="Photo 20"></div>
-  <!-- … continue with placeholders up to 365 -->
-  <!-- Last photo -->
-  <div class="photoCard"><img src="YOUR_LINK_365_HERE" alt="Photo 365"></div>
-</div>
+<div class="grid" id="photoGrid"></div>
 
 <div id="scenePanel">
   <div class="modelWrap" id="totaWrap">
@@ -159,6 +134,31 @@ model-viewer{
 </div>
 
 <script>
+// --- PHOTO GRID ---
+const grid=document.getElementById('photoGrid');
+
+// 365 placeholders for photos
+const photos = [
+  "YOUR_LINK_1_HERE","YOUR_LINK_2_HERE","YOUR_LINK_3_HERE","YOUR_LINK_4_HERE","YOUR_LINK_5_HERE",
+  "YOUR_LINK_6_HERE","YOUR_LINK_7_HERE","YOUR_LINK_8_HERE","YOUR_LINK_9_HERE","YOUR_LINK_10_HERE",
+  "YOUR_LINK_11_HERE","YOUR_LINK_12_HERE","YOUR_LINK_13_HERE","YOUR_LINK_14_HERE","YOUR_LINK_15_HERE",
+  "YOUR_LINK_16_HERE","YOUR_LINK_17_HERE","YOUR_LINK_18_HERE","YOUR_LINK_19_HERE","YOUR_LINK_20_HERE",
+  // ... continue for all 365, last one:
+  "YOUR_LINK_365_HERE"
+];
+
+photos.forEach((link,i)=>{
+  const card=document.createElement('div');
+  card.className='photoCard';
+  const img=document.createElement('img');
+  img.src = link;
+  img.alt = `Photo ${i+1}`;
+  img.loading = "lazy";
+  img.onclick = ()=> location.href=`story.html?id=${i+1}`;
+  card.appendChild(img);
+  grid.appendChild(card);
+});
+
 // --- Boba Messages ---
 const bobaLines=['I love you Tonaaa ♥♥','I am here with you my love ♥✨','You are mine ok ?! 😉♥','You are what I wish for ♥♥','I will always be here for you ♥🫂','Eat well ok ? 😠'];
 let bIndex=0;
