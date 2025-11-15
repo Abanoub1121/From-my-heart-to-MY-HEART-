@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Journey — Boba, Lola & Tota</title>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
 <style>
 body{
   margin:0;
@@ -13,6 +14,7 @@ body{
   background:url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
   background-size:cover;
 }
+
 header{
   padding:24px;
   text-align:center;
@@ -20,6 +22,7 @@ header{
 }
 header h1{margin:0;color:#ff2d95;}
 header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
+
 .grid{
   display:grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -27,12 +30,12 @@ header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
   max-width:1200px;
   margin:20px auto;
 }
+
 .photoCard{
   width:100%;
   aspect-ratio:1/1;
   border-radius:12px;
   overflow:hidden;
-  cursor:pointer;
   background:#00000040;
   transition: transform 0.3s ease;
 }
@@ -44,6 +47,8 @@ header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
   height:100%;
   object-fit:cover;
 }
+
+/***  SCENE PANEL  ***/
 #scenePanel{
   position:fixed;
   left:0;
@@ -55,20 +60,23 @@ header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
   align-items:flex-end;
   z-index:10;
 }
+
 .modelWrap{
   display:flex;
   flex-direction:column;
   align-items:center;
-  cursor:pointer;
   position:relative;
   width:90px;
+  cursor:default !important; /* ✔ removed pointer */
 }
+
 .nameLabel{
   margin-bottom:4px;
   font-size:0.85rem;
   color:#ffeef3;
   text-align:center;
 }
+
 .bubble{
   position:absolute;
   bottom:120%;
@@ -98,16 +106,19 @@ header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
   border-style:solid;
   border-color:rgba(0,0,0,0.85) transparent transparent transparent;
 }
+
 model-viewer{
   width:90px;
   height:90px;
   background:transparent;
   pointer-events:auto;
-  cursor:default;
+  cursor:default !important; /* ✔ no pointer cursor */
 }
 </style>
 </head>
+
 <body>
+
 <header>
   <h1>Our Journey</h1>
   <p>Click a photo to write its story. Meet Boba, Lola & Tota below.</p>
@@ -115,40 +126,48 @@ model-viewer{
 
 <div class="grid" id="photoGrid"></div>
 
+<!--  3D Character Panel  -->
 <div id="scenePanel">
+
+  <!-- Tota -->
   <div class="modelWrap" id="totaWrap">
     <div class="nameLabel">Tota</div>
     <model-viewer id="totaModel"
       src="assets/chibi_cat.glb"
       alt="Tota Model"
       camera-controls
-      camera-orbit="0deg 0deg auto"
-      orientation="0 0 0">
+      camera-orbit="0deg 90deg auto"
+      orientation="0deg 0deg 0deg">
     </model-viewer>
     <div class="bubble" id="totaBubble"></div>
   </div>
+
+  <!-- Boba -->
   <div class="modelWrap" id="bobaWrap">
     <div class="nameLabel">Boba</div>
     <model-viewer id="bobaModel"
       src="assets/chibi_astronaut.glb"
       alt="Boba Model"
       camera-controls
-      camera-orbit="0deg 0deg auto"
-      orientation="0 0 0">
+      camera-orbit="0deg 90deg auto"
+      orientation="0deg 0deg 0deg">
     </model-viewer>
     <div class="bubble" id="bobaBubble"></div>
   </div>
+
+  <!-- Lola -->
   <div class="modelWrap" id="lolaWrap">
     <div class="nameLabel">Lola</div>
     <model-viewer id="lolaModel"
       src="assets/chibi_dog.glb"
       alt="Lola Model"
       camera-controls
-      camera-orbit="0deg 0deg auto"
-      orientation="90 0 0">
+      camera-orbit="0deg 90deg auto"
+      orientation="0deg 0deg 0deg">
     </model-viewer>
     <div class="bubble" id="dogBubble"></div>
   </div>
+
 </div>
 
 <script>
@@ -222,5 +241,6 @@ document.getElementById('totaWrap').addEventListener('click',()=>{
   setTimeout(()=>totaBubble.classList.remove('show'),3000);
 });
 </script>
+
 </body>
 </html>
