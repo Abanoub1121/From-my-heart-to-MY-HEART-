@@ -1,490 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UnLimited Memories</title>
-    <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@r128/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@r128/examples/jsm/"
-      }
-    }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@modelviewer/lib@3.1.1/dist/model-viewer.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0e27;
-            color: #93c5fd;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        canvas#starCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .content {
-            position: relative;
-            z-index: 10;
-            padding: 60px 40px 100px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeIn 1s ease-in;
-        }
-
-        .header h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #bfdbfe;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(147, 197, 253, 0.5);
-        }
-
-        .header .subtitle {
-            font-size: 1.5rem;
-            color: #93c5fd;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        .header .love-message {
-            font-size: 1.2rem;
-            color: #7dd3fc;
-            margin-top: 20px;
-            font-style: italic;
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .photo-card {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            group;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(147, 197, 253, 0.3);
-        }
-
-        .photo-card:hover {
-            transform: scale(1.05);
-            border-color: #7dd3fc;
-            box-shadow: 0 0 30px rgba(125, 211, 252, 0.6);
-        }
-
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-day {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(10, 14, 39, 0.9);
-            color: #93c5fd;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .characters {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            height: 350px;
-            z-index: 100;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid rgba(147, 197, 253, 0.5);
-            box-shadow: 0 0 40px rgba(125, 211, 252, 0.3);
-        }
-
-        model-viewer {
-            width: 100%;
-            height: 100%;
-            background: transparent;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4d 100%);
-            border: 2px solid rgba(147, 197, 253, 0.5);
-            border-radius: 12px;
-            padding: 40px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 0 50px rgba(125, 211, 252, 0.3);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid rgba(147, 197, 253, 0.3);
-            padding-bottom: 20px;
-        }
-
-        .modal-header h2 {
-            color: #bfdbfe;
-            font-size: 1.8rem;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: #93c5fd;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close-btn:hover {
-            color: #7dd3fc;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            color: #93c5fd;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid rgba(147, 197, 253, 0.3);
-            border-radius: 8px;
-            background: rgba(10, 14, 39, 0.5);
-            color: #bfdbfe;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #7dd3fc;
-            box-shadow: 0 0 15px rgba(125, 211, 252, 0.3);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid rgba(147, 197, 253, 0.3);
-            border-radius: 8px;
-            background: rgba(10, 14, 39, 0.5);
-            color: #bfdbfe;
-            font-family: inherit;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #7dd3fc;
-            box-shadow: 0 0 15px rgba(125, 211, 252, 0.3);
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin-right: 10px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 1024px) {
-            .photo-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
-            .characters {
-                width: 250px;
-                height: 250px;
-                bottom: 10px;
-                right: 10px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .photo-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .characters {
-                width: 200px;
-                height: 200px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UnLimited Memories</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+  body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    color:white;
+    background:#0a0e27;
+  }
+  header{
+    padding:24px;
+    text-align:center;
+    background:rgba(0,0,0,0.4);
+  }
+  header h1{margin:0;color:#ff2d95;}
+  header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap:12px;
+    max-width:1200px;
+    margin:20px auto;
+  }
+  .photoCard{
+    width:100%;
+    aspect-ratio:1/1;
+    border-radius:12px;
+    overflow:hidden;
+    cursor:pointer;
+    background:#00000040;
+    transition: transform 0.3s ease;
+  }
+  .photoCard:hover{
+    transform: scale(1.05);
+  }
+  .photoCard img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  #scenePanel{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:20px;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    align-items:flex-end;
+    z-index:10;
+    padding-right:20px;
+  }
+  .modelWrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    cursor:pointer;
+    position:relative;
+    width:90px;
+  }
+  .nameLabel{
+    margin-bottom:4px;
+    font-size:0.85rem;
+    color:#ffeef3;
+    text-align:center;
+  }
+  .bubble{
+    position:absolute;
+    bottom:120%;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(0,0,0,0.85);
+    padding:6px 12px;
+    border-radius:16px;
+    font-size:0.9rem;
+    display:none;
+    white-space:nowrap;
+    opacity:0;
+    transition: opacity 0.4s ease;
+    z-index:20;
+  }
+  .bubble.show{
+    display:block;
+    opacity:1;
+  }
+  .bubble::after{
+    content:"";
+    position:absolute;
+    top:100%;
+    left:50%;
+    transform:translateX(-50%);
+    border-width:6px;
+    border-style:solid;
+    border-color:rgba(0,0,0,0.85) transparent transparent transparent;
+  }
+  model-viewer{
+    width:90px;
+    height:90px;
+    background:transparent;
+    pointer-events:auto;
+    cursor:default;
+  }
+  /* Modal */
+  .modal{
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+    z-index:100;
+  }
+  .modal.active{ display:flex; }
+  .modal-content{
+    background:#1a1f4d;
+    padding:30px;
+    border-radius:12px;
+    width:90%;
+    max-width:500px;
+  }
+  .close-btn{
+    float:right;
+    cursor:pointer;
+    font-size:1.5rem;
+    color:#fff;
+  }
+  textarea, input{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    margin-bottom:15px;
+    border-radius:8px;
+    border:none;
+  }
+  button{
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:#ff2d95;
+    color:white;
+    cursor:pointer;
+  }
+</style>
 </head>
 <body>
-    <canvas id="starCanvas"></canvas>
+<header>
+  <h1>Our Journey</h1>
+  <p>Click a photo to write its story. Meet Boba, Lola & Tota below.</p>
+</header>
 
-    <div class="content">
-        <div class="header">
-            <h1>✨ UnLimited Memories ✨</h1>
-            <div class="love-message">
-                I have always Loved You 💙 I Love You now 💙 I will always Love You ❤️
-            </div>
-        </div>
+<div class="grid" id="photoGrid"></div>
 
-        <div class="photo-grid" id="photoGrid"></div>
-    </div>
+<div id="scenePanel">
+  <div class="modelWrap" id="totaWrap">
+    <div class="nameLabel">Tota</div>
+    <model-viewer id="totaModel" src="assets/chibi_cat.glb" alt="Tota Model" camera-controls></model-viewer>
+    <div class="bubble" id="totaBubble"></div>
+  </div>
+  <div class="modelWrap" id="bobaWrap">
+    <div class="nameLabel">Boba</div>
+    <model-viewer id="bobaModel" src="assets/chibi_astronaut.glb" alt="Boba Model" camera-controls></model-viewer>
+    <div class="bubble" id="bobaBubble"></div>
+  </div>
+  <div class="modelWrap" id="lolaWrap">
+    <div class="nameLabel">Lola</div>
+    <model-viewer id="lolaModel" src="assets/chibi_dog.glb" alt="Lola Model" camera-controls></model-viewer>
+    <div class="bubble" id="dogBubble"></div>
+  </div>
+</div>
 
-    <div class="characters">
-        <model-viewer 
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/chibi_cat-OmpxA0nX0OgOSgvJCo8vSRVKqqPDbA.glb"
-            alt="Boba"
-            auto-rotate
-            camera-controls
-            style="width: 100%; height: 100%;">
-        </model-viewer>
-    </div>
+<!-- Modal -->
+<div class="modal" id="storyModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h2 id="dayTitle">Day 1</h2>
+    <textarea id="storyText" placeholder="Write your story..."></textarea>
+    <input type="url" id="photoUrl" placeholder="Add photo URL (optional)">
+    <button onclick="saveStory()">Save Story</button>
+  </div>
+</div>
 
-    <div class="modal" id="storyModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="dayTitle">Day 1</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="form-group">
-                <label>Your Story ✨</label>
-                <textarea id="storyText" placeholder="Write your beautiful memory for this day..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Photo URL (optional)</label>
-                <input type="url" id="photoUrl" placeholder="https://example.com/photo.jpg">
-            </div>
-            <button class="btn" onclick="saveStory()">Save Story 💾</button>
-            <button class="btn" style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);" onclick="closeModal()">Close</button>
-        </div>
-    </div>
+<script>
+  // --- Photo Grid ---
+  const grid = document.getElementById('photoGrid');
+  for(let i=1;i<=365;i++){
+    const card=document.createElement('div');
+    card.className='photoCard';
+    const img=document.createElement('img');
+    img.src=`https://via.placeholder.com/400x400.png?text=Day+${i}`;
+    img.alt=`Day ${i}`;
+    img.onclick=()=>openModal(i);
+    card.appendChild(img);
+    grid.appendChild(card);
+  }
 
-    <script>
-        // Create starfield background
-        function createStarfield() {
-            const canvas = document.getElementById('starCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+  // --- Modal Functions ---
+  let currentDay=0;
+  function openModal(day){
+    currentDay=day;
+    document.getElementById('dayTitle').textContent=`Day ${day}`;
+    const saved=localStorage.getItem(`story-day-${day}`);
+    if(saved){
+      const data=JSON.parse(saved);
+      document.getElementById('storyText').value=data.story||'';
+      document.getElementById('photoUrl').value=data.photoUrl||'';
+    }else{
+      document.getElementById('storyText').value='';
+      document.getElementById('photoUrl').value='';
+    }
+    document.getElementById('storyModal').classList.add('active');
+  }
+  function closeModal(){
+    document.getElementById('storyModal').classList.remove('active');
+  }
+  function saveStory(){
+    const story=document.getElementById('storyText').value;
+    const photoUrl=document.getElementById('photoUrl').value;
+    localStorage.setItem(`story-day-${currentDay}`,JSON.stringify({story,photoUrl}));
+    alert(`Day ${currentDay} saved!`);
+    closeModal();
+  }
 
-            const stars = [];
-            
-            for (let i = 0; i < 300; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    opacity: Math.random() * 0.5 + 0.5,
-                    twinkleSpeed: Math.random() * 0.02 + 0.005
-                });
-            }
+  // --- 3D Models Messages ---
+  const bobaLines=['I love you ♥','You are mine ♥','I will always be here ♥'];
+  let bIndex=0;
+  const bobaBubble=document.getElementById('bobaBubble');
+  let bobaTimeout, autoInterval;
+  function showBoba(){ clearTimeout(bobaTimeout); bobaBubble.textContent=bobaLines[bIndex]; bobaBubble.classList.add('show'); bobaTimeout=setTimeout(()=>{ bobaBubble.classList.remove('show'); },3000); bIndex=(bIndex+1)%bobaLines.length; }
+  function startAutoBoba(){ autoInterval=setInterval(showBoba,5000); }
+  startAutoBoba();
+  document.getElementById('bobaWrap').addEventListener('click',()=>{ clearInterval(autoInterval); showBoba(); startAutoBoba(); });
 
-            let time = 0;
+  const dogBubble=document.getElementById('dogBubble');
+  let dogSilenceUntil=0;
+  function dogHaw(){ if(Date.now()<dogSilenceUntil) return; dogBubble.textContent='haw haw'; dogBubble.classList.add('show'); setTimeout(()=>dogBubble.classList.remove('show'),3000); }
+  setInterval(dogHaw,15000);
+  setTimeout(dogHaw,1500);
+  document.getElementById('lolaWrap').addEventListener('click',()=>{ dogSilenceUntil=Date.now()+60000; dogBubble.textContent='♥'; dogBubble.classList.add('show'); setTimeout(()=>dogBubble.classList.remove('show'),3000); });
 
-            function animate() {
-                ctx.fillStyle = '#0a0e27';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                // Draw nebula glow
-                const gradient = ctx.createRadialGradient(
-                    canvas.width * 0.3, canvas.height * 0.3, 0,
-                    canvas.width * 0.3, canvas.height * 0.3, canvas.width * 0.8
-                );
-                gradient.addColorStop(0, 'rgba(125, 211, 252, 0.05)');
-                gradient.addColorStop(1, 'transparent');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                // Draw stars
-                stars.forEach(star => {
-                    star.opacity += Math.sin(time * star.twinkleSpeed) * 0.02;
-                    star.opacity = Math.max(0.3, Math.min(1, star.opacity));
-
-                    ctx.fillStyle = `rgba(191, 219, 254, ${star.opacity})`;
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    // Glow effect
-                    ctx.strokeStyle = `rgba(125, 211, 252, ${star.opacity * 0.5})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.radius + 2, 0, Math.PI * 2);
-                    ctx.stroke();
-                });
-
-                time++;
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
-        }
-
-        // Generate photo grid
-        function generatePhotoGrid() {
-            const photoGrid = document.getElementById('photoGrid');
-            const realPhotos = [
-                'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=400&h=400&fit=crop',
-                'https://images.unsplash.com/photo-1494301891161-7a88fb7ce338?w=400&h=400&fit=crop'
-            ];
-
-            for (let i = 1; i <= 365; i++) {
-                const photoCard = document.createElement('div');
-                photoCard.className = 'photo-card';
-                
-                let imgSrc = realPhotos[i - 1] || `https://api.placeholder.com/400?text=Day%20${i}`;
-                
-                photoCard.innerHTML = `
-                    <img src="${imgSrc}" alt="Day ${i}" onerror="this.src='https://api.placeholder.com/400?text=Day%20${i}'">
-                    <div class="photo-day">Day ${i}</div>
-                `;
-                
-                photoCard.addEventListener('click', () => openModal(i));
-                photoGrid.appendChild(photoCard);
-            }
-        }
-
-        let currentDay = 0;
-
-        function openModal(day) {
-            currentDay = day;
-            const modal = document.getElementById('storyModal');
-            const dayTitle = document.getElementById('dayTitle');
-            const storyText = document.getElementById('storyText');
-            const photoUrl = document.getElementById('photoUrl');
-            
-            dayTitle.textContent = `Day ${day}`;
-            
-            const saved = localStorage.getItem(`story-day-${day}`);
-            if (saved) {
-                const data = JSON.parse(saved);
-                storyText.value = data.story || '';
-                photoUrl.value = data.photoUrl || '';
-            } else {
-                storyText.value = '';
-                photoUrl.value = '';
-            }
-            
-            modal.classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('storyModal').classList.remove('active');
-        }
-
-        function saveStory() {
-            const storyText = document.getElementById('storyText').value;
-            const photoUrl = document.getElementById('photoUrl').value;
-            
-            const data = {
-                story: storyText,
-                photoUrl: photoUrl,
-                savedAt: new Date().toISOString()
-            };
-            
-            localStorage.setItem(`story-day-${currentDay}`, JSON.stringify(data));
-            
-            // Show confirmation
-            alert(`✨ Day ${currentDay} story saved! ❤️`);
-            closeModal();
-        }
-
-        // Initialize
-        createStarfield();
-        generatePhotoGrid();
-
-        // Close modal on background click
-        document.getElementById('storyModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-    </script>
+  const totaBubble=document.getElementById('totaBubble');
+  let totaSilenceUntil=0;
+  function totaMeow(){ if(Date.now()<totaSilenceUntil) return; totaBubble.textContent='meow'; totaBubble.classList.add('show'); setTimeout(()=>totaBubble.classList.remove('show'),3000); }
+  setInterval(totaMeow,15000);
+  setTimeout(totaMeow,1500);
+  document.getElementById('totaWrap').addEventListener('click',()=>{ totaSilenceUntil=Date.now()+60000; totaBubble.textContent='♥'; totaBubble.classList.add('show'); setTimeout(()=>totaBubble.classList.remove('show'),3000); });
+</script>
 </body>
 </html>
