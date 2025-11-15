@@ -159,6 +159,7 @@
             width: 100%;
             height: 100%;
             background: transparent;
+            cursor: auto;
         }
 
         .speech-bubble {
@@ -297,11 +298,10 @@
                         id="chibiViewer1"
                         src="/images/chibi-astronaut.glb"
                         alt="Boba"
-                        auto-rotate
                         camera-controls>
                     </model-viewer>
                 </div>
-                <div class="speech-bubble" id="speech1">I have always<br>Loved You 💙</div>
+                <div class="speech-bubble" id="speech1">I love you</div>
                 <div class="chibi-name">Boba 👨‍🚀</div>
             </div>
 
@@ -311,11 +311,10 @@
                         id="chibiViewer2"
                         src="/images/chibi-dog.glb"
                         alt="Lola"
-                        auto-rotate
                         camera-controls>
                     </model-viewer>
                 </div>
-                <div class="speech-bubble" id="speech2">I Love You Now 💙</div>
+                <div class="speech-bubble" id="speech2">haw haw</div>
                 <div class="chibi-name">Lola 🐕</div>
             </div>
 
@@ -325,11 +324,10 @@
                         id="chibiViewer3"
                         src="/images/chibi-cat.glb"
                         alt="Tota"
-                        auto-rotate
                         camera-controls>
                     </model-viewer>
                 </div>
-                <div class="speech-bubble" id="speech3">I will always<br>Love You ❤️</div>
+                <div class="speech-bubble" id="speech3">meow</div>
                 <div class="chibi-name">Tota 🐱</div>
             </div>
         </div>
@@ -594,13 +592,13 @@
                 
                 messageIndices.boba = (messageIndex + 1) % data.messages.length;
             } else {
-                // Send heart animation
                 const heartElement = document.createElement('div');
                 heartElement.textContent = '❤️';
                 heartElement.style.position = 'fixed';
                 heartElement.style.fontSize = '2rem';
                 heartElement.style.pointerEvents = 'none';
                 heartElement.style.zIndex = '1000';
+                heartElement.style.color = 'red';
                 
                 const speechBubble = document.getElementById(characterData[character].elementId);
                 const rect = speechBubble.getBoundingClientRect();
