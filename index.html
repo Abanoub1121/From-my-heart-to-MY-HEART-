@@ -51,7 +51,7 @@ header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
   bottom:20px;
   display:flex;
   justify-content:center;
-  gap:20px;
+  gap:10px;
   align-items:flex-end;
   z-index:10;
 }
@@ -102,6 +102,8 @@ model-viewer{
   width:90px;
   height:90px;
   background:transparent;
+  pointer-events:auto;
+  cursor:default;
 }
 </style>
 </head>
@@ -116,17 +118,35 @@ model-viewer{
 <div id="scenePanel">
   <div class="modelWrap" id="totaWrap">
     <div class="nameLabel">Tota</div>
-    <model-viewer id="totaModel" src="assets/chibi_cat.glb" alt="Tota Model" camera-controls orientation="0 0 0"></model-viewer>
+    <model-viewer id="totaModel"
+      src="assets/chibi_cat.glb"
+      alt="Tota Model"
+      camera-controls
+      camera-orbit="0deg 0deg auto"
+      orientation="0 0 0">
+    </model-viewer>
     <div class="bubble" id="totaBubble"></div>
   </div>
   <div class="modelWrap" id="bobaWrap">
     <div class="nameLabel">Boba</div>
-    <model-viewer id="bobaModel" src="assets/chibi_astronaut.glb" alt="Boba Model" camera-controls orientation="0 0 0"></model-viewer>
+    <model-viewer id="bobaModel"
+      src="assets/chibi_astronaut.glb"
+      alt="Boba Model"
+      camera-controls
+      camera-orbit="0deg 0deg auto"
+      orientation="0 0 0">
+    </model-viewer>
     <div class="bubble" id="bobaBubble"></div>
   </div>
   <div class="modelWrap" id="lolaWrap">
     <div class="nameLabel">Lola</div>
-    <model-viewer id="lolaModel" src="assets/chibi_dog.glb" alt="Lola Model" camera-controls orientation="90 0 0"></model-viewer>
+    <model-viewer id="lolaModel"
+      src="assets/chibi_dog.glb"
+      alt="Lola Model"
+      camera-controls
+      camera-orbit="0deg 0deg auto"
+      orientation="90 0 0">
+    </model-viewer>
     <div class="bubble" id="dogBubble"></div>
   </div>
 </div>
