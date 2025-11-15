@@ -52,7 +52,7 @@ header p{margin-top:6px;color:#ffdff3;font-size:0.9rem;}
   bottom:20px;
   display:flex;
   justify-content:center;
-  gap:50px;
+  gap:30px;
   align-items:flex-end;
   z-index:10;
 }
@@ -103,6 +103,7 @@ model-viewer{
   width:90px;
   height:90px;
   background:transparent;
+  transform-origin: center bottom;
 }
 </style>
 </head>
@@ -117,17 +118,17 @@ model-viewer{
 <div id="scenePanel">
   <div class="modelWrap" id="totaWrap">
     <div class="nameLabel">Tota</div>
-    <model-viewer id="totaModel" src="assets/chibi_cat.glb" camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="2deg" alt="Tota Model"></model-viewer>
+    <model-viewer id="totaModel" src="assets/chibi_cat.glb" camera-controls alt="Tota Model"></model-viewer>
     <div class="bubble" id="totaBubble"></div>
   </div>
   <div class="modelWrap" id="bobaWrap">
     <div class="nameLabel">Boba</div>
-    <model-viewer id="bobaModel" src="assets/chibi_astronaut.glb" camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="2deg" alt="Boba Model"></model-viewer>
+    <model-viewer id="bobaModel" src="assets/chibi_astronaut.glb" camera-controls alt="Boba Model"></model-viewer>
     <div class="bubble" id="bobaBubble"></div>
   </div>
   <div class="modelWrap" id="lolaWrap">
     <div class="nameLabel">Lola</div>
-    <model-viewer id="lolaModel" src="assets/chibi_dog.glb" camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="2deg" alt="Lola Model"></model-viewer>
+    <model-viewer id="lolaModel" src="assets/chibi_dog.glb" camera-controls alt="Lola Model"></model-viewer>
     <div class="bubble" id="dogBubble"></div>
   </div>
 </div>
@@ -147,15 +148,19 @@ for(let i=1;i<=365;i++){
   grid.appendChild(card);
 }
 
+// --- Model Rotation Together ---
+let rotationY = 0;
+function rotateModels(){
+  rotationY += 0.2; // slow rotation
+  document.getElementById('totaModel').style.transform = `rotateY(${rotationY}deg)`;
+  document.getElementById('bobaModel').style.transform = `rotateY(${rotationY}deg)`;
+  document.getElementById('lolaModel').style.transform = `rotateY(${rotationY}deg)`;
+  requestAnimationFrame(rotateModels);
+}
+rotateModels();
+
 // --- Boba Messages ---
-const bobaLines=[
-  'I love you Tonaaa ♥♥',
-  'I am here with you my love ♥✨',
-  'You are mine ok ?! 😉♥',
-  'You are what I wish for ♥♥',
-  'I will always be here for you ♥🫂',
-  'Eat well ok ? 😠'
-];
+const bobaLines=['I love you Tonaaa ♥♥','I am here with you my love ♥✨','You are mine ok ?! 😉♥','You are what I wish for ♥♥','I will always be here for you ♥🫂','Eat well ok ? 😠'];
 let bIndex=0;
 const bobaBubble=document.getElementById('bobaBubble');
 let bobaTimeout, autoInterval;
